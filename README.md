@@ -14,11 +14,47 @@ The system has 4 parts: Account Service, Order Service, Store Service, Device Se
 
 ### Platform Design.
 
-progress(0%)
+progress(20%)
+
+---
+
+#### Server assignment
+
+Request Server & Store Service & Message Queue use 1 server (iZwz96e5pr6sbuofps6oe2Z)
+
+Account Service use 4 servers (1 manager + 3 worker)(launch-advisor-20190513)
+
+Device Manage Service use 1 server (iZuf6dn28c3o13ibhawbdhZ)
+
+Order Manage Service use 2 server (1 manager + 1 worker)(VM-0-15-ubuntu)
+
+---
+
+#### Function
+
+Describe what each server(s) need to do
+
+##### iZwz96e5pr6sbuofps6oe2Z
+
+waiting for discussion
+
+##### launch-advisor-20190513(3 workers)
+
+waiting for discussion
+
+##### iZuf6dn28c3o13ibhawbdhZ
+
+waiting for discussion
+
+##### VM-0-15-ubuntu(1 worker)
+
+waiting for discussion
+
+---
 
 ### Protocol and Function.
 
-Accound(0%)
+Account(0%)
 
 Order(0%)
 
@@ -26,9 +62,11 @@ Store(0%)
 
 Device(0%)
 
+---
+
 ### Code
 
-Accound(0%)
+Account(0%)
 
 Order(0%)
 
@@ -38,7 +76,7 @@ Device(0%)
 
 ### Debug & Test
 
-Accound(0%)
+Account(0%)
 
 Order(0%)
 
