@@ -36,19 +36,19 @@ Describe what each server(s) need to do
 
 ##### iZwz96e5pr6sbuofps6oe2Z
 
-waiting for discussion
+`waiting for discussion`
 
 ##### launch-advisor-20190513(3 workers)
 
-waiting for discussion
+`waiting for discussion`
 
 ##### iZuf6dn28c3o13ibhawbdhZ
 
-waiting for discussion
+`waiting for discussion`
 
 ##### VM-0-15-ubuntu(1 worker)
 
-waiting for discussion
+`waiting for discussion`
 
 ---
 
