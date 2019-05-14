@@ -1,0 +1,1 @@
+python -m grpc_tools.protoc --proto_path=../../AccountMicroService/ --python_out=. --grpc_python_out=. ../../AccountMicroService/service.proto
