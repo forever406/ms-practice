@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.ms.account";
+option java_outer_classname = "AccountProto";
+option objc_class_prefix = "ACP";
+
+package accountservice;
+
+service AccountService{
+
+    rpc SignupNewUser(SignupMessage) returns (SignupResponse){}
+
+    rpc LoginUser(LoginMessage) returns (LoginResponse){}
+
+}
+
+message LoginMessage{
+
+    string username = 1;
+
+    string password = 2;
+}
+
+message SignupMessage{
+
+    string username = 1;
+
+    string password = 2;
+
+}
+
+message LoginResponse{
+
+    int32 status=1;
+
+    string message=2;
+
+}
+
+message SignupResponse{
+
+    int32 status=1;
+
+    string message=2;
+
+}
