@@ -1,6 +1,8 @@
-FROM postgres:11.2-alpine
-#ADD ./db_init.sql /docker-entrypoint-initdb.d/
-
-RUN sudo -u postgres postgres -D /usr/local/var/postgres
-
-RUN  psql --command "CREATE DATABASE user_test_table;"
+FROM postgres:latest
+#ADD ./db_init.sql /docker-entrypoint-initdb.d/RUN initdb -D /usr/local/var/postgres
+CMD mkdir /usr/local/var
+CMD chmod 777 /usr/local/var
+USER postgres
+CMD initdb -D /usr/local/var/postgres
+CMD pg_ctl -D /usr/local/var/postgres start
+CMD  psql --command "CREATE DATABASE user_test_table;"
