@@ -1,6 +1,6 @@
 FROM postgres:11.2-alpine
 #ADD ./db_init.sql /docker-entrypoint-initdb.d/
 
-RUN postgres
+RUN sudo -u postgres postgres -D /usr/local/var/postgres
 
 RUN  psql --command "CREATE DATABASE user_test_table;"
