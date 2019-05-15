@@ -6,24 +6,15 @@ services:
       context: ./AccountMicroService/
       dockerfile: Dockerfile-DB
     container_name: ms_practice_postgres
-    # environment:
-    #   POSTGRES_DB: user_test_table
     volumes:
       - type: volume
         source: database
         target: /var/lib/postgresql/data
-    # ports:
-    #   - "5432:5432"
     networks:
       inner:
         aliases:
           - db
-    deploy:
-      placement:
-        constraints:
-          - node.role == worker
   account:
-    # restart: always
     build: 
       context: ./AccountMicroService/
       dockerfile: Dockerfile
@@ -48,10 +39,6 @@ services:
       outter:
         aliases:
           - account
-    deploy:
-      placement:
-        constraints:
-          - node.role = manager    
   tester:
     build:
       context: ./TestService/AccountTest/

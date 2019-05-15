@@ -1,0 +1,52 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:11.2-alpine
+    volumes:
+      - type: volume
+        source: database
+        target: /var/lib/postgresql/data
+    # ports:
+    #   - "5432:5432"
+    networks:
+      inner:
+        aliases:
+          - db
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+  account:
+    # restart: always
+    image: python:2.7.16
+    depends_on: 
+      - db
+    ports:
+      - "50051:50051"
+    command: 
+      - /bin/sh
+      - -c
+      - |
+          pip install -r /code/requirement.txt
+          python /code/AccountRPCServer.py
+    volumes:
+      - type: bind
+        source: ./AccountMicroService/
+        target: /code/      
+    networks:
+      inner:
+        aliases:
+          - account
+      outter:
+        aliases:
+          - account
+    deploy:
+      placement:
+        constraints:
+          - node.role = manager    
+networks:
+  inner:
+  outter:
+volumes:
+  database:
