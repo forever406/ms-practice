@@ -18,6 +18,9 @@ services:
       inner:
         aliases:
           - db
+    deploy:
+      constraints:
+        - node.role == worker
   account:
     # restart: always
     build: 
@@ -44,6 +47,9 @@ services:
       outter:
         aliases:
           - account
+    deploy:
+      constraints:
+        - node.role = manager    
   tester:
     build:
       context: ./TestService/AccountTest/
@@ -60,7 +66,6 @@ services:
       outter:
         aliases:
           - tester
-
 networks:
   inner:
   outter:
