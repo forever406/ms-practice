@@ -15,7 +15,7 @@ def login(stub, username, password):
 
 
 def run_test():
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel('account:50051') as channel:
         stub = service_pb2_grpc.AccountServiceStub(channel)
         username = str(uuid.uuid4())
         password = str(uuid.uuid4())

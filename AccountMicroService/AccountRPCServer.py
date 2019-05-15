@@ -7,24 +7,26 @@ from concurrent import futures
 
 class AccountServiceReceiver(service_pb2_grpc.AccountServiceServicer):
     def SignupNewUser(self, request, context):
-        status = AccountDB.signup_user(request.username, request.password)
-        if status == 0:
-            msg = "succeed"
-        elif status == 1:
-            msg = "username existed"
-        elif status == 2:
+        if len(request.password) < 6:
             msg = "password not strong"
+            return service_pb2.SignupResponse(status=-2, message=msg, userid="")
         else:
-            msg = "unknown error"
-        return service_pb2.SignupResponse(status=status, message=msg)
+            user = AccountDB.signup_user(request.username, request.password)
+            if user is not None:
+                msg = "succeed"
+                return service_pb2.SignupResponse(status=0, message=msg, userid=str(user.userid))
+            else:
+                msg = "username existed"
+                return service_pb2.SignupResponse(status=-1, message=msg, userid="")
 
     def LoginUser(self, request, context):
-        status = AccountDB.login_user(request.username, request.password)
-        if status == 0:
+        userid = AccountDB.login_user(request.username, request.password)
+        if userid is not None:
             msg = "login succeed"
+            return service_pb2.LoginResponse(status=0, message=msg, userid=str(userid))
         else:
             msg = "login fail"
-        return service_pb2.LoginResponse(status=status, message=msg)
+            return service_pb2.LoginResponse(status=-1, message=msg, userid=str(userid))
 
 
 def serve():

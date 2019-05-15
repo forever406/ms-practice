@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: ms_practice_postgres
+    image: postgres:11.2-alpine
+    volumes:
+      - type: volume
+        source: database
+        target: /var/lib/postgresql/data
+    networks:
+      inner:
+        aliases:
+          - db
+  account:
+    build: 
+      context: ./AccountMicroService/
+      dockerfile: Dockerfile
+    container_name: ms_practice_account_service
+    depends_on: 
+      - db
+    ports:
+      - "50051:50051"
+    command: 
+      - /bin/sh
+      - -c
+      - |
+          python /code/AccountRPCServer.py
+    volumes:
+      - ./AccountMicroService/:/code/
+    networks:
+      inner:
+        aliases:
+          - account
+      outter:
+        aliases:
+          - account
+  tester:
+    build:
+      context: ./TestService/AccountTest/
+      dockerfile: Dockerfile
+    container_name: ms_practice_account_tester
+    volumes:
+      - ./TestService/AccountTest/:/code/
+    networks: 
+      outter:
+        aliases:
+          - tester
+
+networks:
+  inner:
+  outter:
+volumes:
+  database:

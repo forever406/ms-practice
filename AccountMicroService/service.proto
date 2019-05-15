@@ -7,22 +7,24 @@ option objc_class_prefix = "ACP";
 
 package accountservice;
 
-service AccountService{
+service AccountService {
 
-    rpc SignupNewUser(SignupMessage) returns (SignupResponse){}
+    rpc SignupNewUser (SignupMessage) returns (SignupResponse) {
+    }
 
-    rpc LoginUser(LoginMessage) returns (LoginResponse){}
+    rpc LoginUser (LoginMessage) returns (LoginResponse) {
+    }
 
 }
 
-message LoginMessage{
+message LoginMessage {
 
     string username = 1;
 
     string password = 2;
 }
 
-message SignupMessage{
+message SignupMessage {
 
     string username = 1;
 
@@ -30,18 +32,21 @@ message SignupMessage{
 
 }
 
-message LoginResponse{
+message LoginResponse {
 
-    int32 status=1;
+    int32 status = 1;
 
-    string message=2;
+    string message = 2;
+
+    string userid = 3;
 
 }
 
-message SignupResponse{
+message SignupResponse {
 
-    int32 status=1;
+    int32 status = 1;
 
-    string message=2;
+    string message = 2;
 
+    string userid = 3;
 }
