@@ -19,8 +19,9 @@ services:
         aliases:
           - db
     deploy:
-      constraints:
-        - node.role == worker
+      placement:
+        constraints:
+          - node.role == worker
   account:
     # restart: always
     build: 
@@ -48,8 +49,9 @@ services:
         aliases:
           - account
     deploy:
-      constraints:
-        - node.role = manager    
+      placement:
+        constraints:
+          - node.role = manager    
   tester:
     build:
       context: ./TestService/AccountTest/
