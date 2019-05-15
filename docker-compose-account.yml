@@ -19,7 +19,7 @@ services:
         aliases:
           - db
   account:
-    restart: always
+    # restart: always
     build: 
       context: ./AccountMicroService/
       dockerfile: Dockerfile
