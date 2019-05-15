@@ -1,5 +1,7 @@
 from peewee import *
+import uuid
 
+# db = PostgresqlDatabase('user_test_table', user='postgres', host='172.27.0.2')
 db = PostgresqlDatabase('user_test_table', user='postgres', host='db')
 
 
@@ -15,7 +17,7 @@ class User(BaseModel):
 
 
 def get_user(username):
-    users = User.select().where(username=username)
+    users = User.select().where(User.username == username)
     if len(users) > 0:
         return users[0]
     else:
@@ -25,14 +27,15 @@ def get_user(username):
 def signup_user(username, password):
     user = get_user(username)
     if user is None:
-        user = User.create(username=username, password=password)
+        userid = uuid.uuid4()
+        user = User.create(username=username, password=password, userid=userid)
         return user
     else:
         return None
 
 
 def login_user(username, password):
-    users = User.select().where(username=username, password=password)
+    users = User.select().where((User.username == username) & (User.password == password))
     if len(users) > 0:
         return users[0].userid
     else:

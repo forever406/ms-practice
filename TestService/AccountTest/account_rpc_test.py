@@ -5,12 +5,14 @@ import uuid
 
 
 def signup(stub, username, password):
-    signup_result = stub.SignupNewUser(service_pb2.SignupMessage(username=username, password=password))
+    signup_message = service_pb2.SignupMessage(username=username, password=password)
+    signup_result = stub.SignupNewUser(signup_message)
     return signup_result
 
 
 def login(stub, username, password):
-    login_result = stub.LoginUser(service_pb2.LoginMessage(username=username, password=password))
+    login_message = service_pb2.LoginMessage(username=username, password=password)
+    login_result = stub.LoginUser(login_message)
     return login_result
 
 

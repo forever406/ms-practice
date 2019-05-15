@@ -2,17 +2,24 @@ version: "3.7"
 
 services:
   db:
+    build:
+      context: ./AccountMicroService/
+      dockerfile: Dockerfile-DB
     container_name: ms_practice_postgres
-    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_DB: user_test_table
     volumes:
       - type: volume
         source: database
         target: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       inner:
         aliases:
           - db
   account:
+    restart: always
     build: 
       context: ./AccountMicroService/
       dockerfile: Dockerfile
@@ -27,7 +34,9 @@ services:
       - |
           python /code/AccountRPCServer.py
     volumes:
-      - ./AccountMicroService/:/code/
+      - type: bind
+        source: ./AccountMicroService/
+        target: /code/      
     networks:
       inner:
         aliases:
@@ -40,8 +49,13 @@ services:
       context: ./TestService/AccountTest/
       dockerfile: Dockerfile
     container_name: ms_practice_account_tester
+    depends_on:
+      - account
     volumes:
-      - ./TestService/AccountTest/:/code/
+      - type: bind
+        source: ./TestService/AccountTest/
+        target: /code/      
+    command: python /code/account_rpc_test.py
     networks: 
       outter:
         aliases:

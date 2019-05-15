@@ -3,10 +3,14 @@ import service_pb2_grpc
 import AccountDB
 import grpc
 from concurrent import futures
+import time
+
+_ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
 class AccountServiceReceiver(service_pb2_grpc.AccountServiceServicer):
     def SignupNewUser(self, request, context):
+        print("receive sign up request")
         if len(request.password) < 6:
             msg = "password not strong"
             return service_pb2.SignupResponse(status=-2, message=msg, userid="")
@@ -20,6 +24,7 @@ class AccountServiceReceiver(service_pb2_grpc.AccountServiceServicer):
                 return service_pb2.SignupResponse(status=-1, message=msg, userid="")
 
     def LoginUser(self, request, context):
+        print("receive login request")
         userid = AccountDB.login_user(request.username, request.password)
         if userid is not None:
             msg = "login succeed"
@@ -34,7 +39,14 @@ def serve():
     service_pb2_grpc.add_AccountServiceServicer_to_server(AccountServiceReceiver(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
+    try:
+        while True:
+            time.sleep(_ONE_DAY_IN_SECONDS)
+    except KeyboardInterrupt:
+        server.stop(0)
 
 
 if __name__ == '__main__':
     serve()
+    while True:
+        pass
