@@ -17,15 +17,15 @@ router.post('/add', async(req, res, next)=> {
     let body=req.body;
     console.log(body);
     const client = await pool.connect();
-    client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
-    let dbResult=await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
-    if (dbResult.rows[0]){
-        res.json({
-            status:-1,
-            msg:'account already exists'
-        });
-    }else{
-       let result=client.query("INSERT INTO account(username, password,userid) VALUES('"+
+    // client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
+    // client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
+    // if (dbResult.rows[0]){
+    //     res.json({
+    //         status:-1,
+    //         msg:'account already exists'
+    //     });
+    // }else{
+       client.query("CREATE EXTENSION IF NOT EXISTS \"pgcrypto\";INSERT INTO account(username, password,userid) VALUES('"+
             body.username+ "', '"+
             body.password+ "',"+"gen_random_uuid());"
         ).then(()=>{
