@@ -9,12 +9,12 @@ const client =new Client({
       password: '',
   });
 client.connect();
+client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
 
 
 router.post('/add', async(req, res, next)=> {
     let body=req.body;
     console.log(body);
-    await client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
     let dbResult=await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
     if (dbResult.rows[0]){
         res.json({
@@ -26,24 +26,11 @@ router.post('/add', async(req, res, next)=> {
             body.username+ "', '"+
             body.password+ "',"+"gen_random_uuid());"
         ).then(
-            (result)=>{
-                client.query('SELECT * FROM account WHERE username = ($1);',[body.username]
-                ).then(
-                    (result)=>{
-                        res.json({
-                            userid:result.rows[0].userid,
-                            status:0,
-                            msg:'add account succeed'
-                        });
-                    }
-                ).catch(
-                    (err)=>{
-                        res.json({
-                            status:-1,
-                            msg:'add account fail'
-                        });
-                    }
-                );
+            (result)=> {
+                res.json({
+                    status: 0,
+                    msg: 'add account succeed'
+                });
             }
         ).catch((err)=>{
             console.log(err);
@@ -52,7 +39,7 @@ router.post('/add', async(req, res, next)=> {
 });
 router.post('/login', async(req, res, next)=> {
     let body=req.body;
-    let dbResult=await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
+    let dbResult= await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
     (body.password===dbResult.rows[0].password)? res.json({
         msg:'log in succeed',
         userid: dbResult.rows[0].userid,
