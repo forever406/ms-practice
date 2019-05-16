@@ -25,16 +25,25 @@ router.post('/add', async(req, res, next)=> {
             msg:'account already exists'
         });
     }else{
-       let result=await client.query("INSERT INTO account(username, password,userid) VALUES('"+
+       let result=client.query("INSERT INTO account(username, password,userid) VALUES('"+
             body.username+ "', '"+
             body.password+ "',"+"gen_random_uuid());"
-        )
-        res.json({
-            status: 0,
-            msg: 'add account succeed'
-        });
+        ).then(()=>{
+           res.json({
+               status: 0,
+               msg: 'add account succeed'
+           });
+           client.release(true)
+
+       }).catch(()=>{
+           res.json({
+               status:-1
+           });
+           client.release(true)
+
+       })
+
     }
-    client.release(true)
 });
 router.post('/login', async(req, res, next)=> {
     let body=req.body;
