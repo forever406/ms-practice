@@ -13,6 +13,7 @@ const getClient =()=>{
 
 router.post('/add', async(req, res, next)=> {
     let body=req.body;
+    console.log(body);
     let client=getClient();
     await client.connect();
     await client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
@@ -21,7 +22,7 @@ router.post('/add', async(req, res, next)=> {
         res.json({
             status:-1,
             msg:'account already exists'
-        })
+        });
         client=null
     }else{
         client.query("INSERT INTO account(username, password,userid) VALUES('"+
@@ -29,16 +30,25 @@ router.post('/add', async(req, res, next)=> {
             body.password+ "',"+"gen_random_uuid());"
         ).then(
             (result)=>{
-                client.query('SELECT * FROM account WHERE username = ($1);',[body.username]).then(
+                client.query('SELECT * FROM account WHERE username = ($1);',[body.username]
+                ).then(
                     (result)=>{
                         res.json({
                             userid:result.rows[0].userid,
                             status:0,
                             msg:'add account succeed'
-                        })
+                        });
+                        client=null
+                    }
+                ).catch(
+                    (err)=>{
+                        res.json({
+                            status:-1,
+                            msg:'add account fail'
+                        });
+                        client=null
                     }
                 );
-                client=null
             }
         ).catch((err)=>{
             console.log(err);
@@ -57,7 +67,7 @@ router.post('/login', async(req, res, next)=> {
         status:0
     }):res.json({
         status:-1,
-        msg:'log in fail'})
+        msg:'log in fail'});
     client=null
 });
 module.exports=router;
