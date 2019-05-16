@@ -12,7 +12,7 @@ const client = new Client({
 router.post('/add', async(req, res, next)=> {
     let body=req.body;
     await client.connect();
-    let dbResult=await client.query('INSERT INTO User(username, password) VALUES($1, $2)', [body.username, body.password]);
+    let dbResult=await client.query('INSERT INTO user(username, password) VALUES($1, $2)', [body.username, body.password]);
     client.end((err) => {
         console.log('client has disconnected');
         if (err) {
