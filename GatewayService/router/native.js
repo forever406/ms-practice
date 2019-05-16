@@ -4,6 +4,7 @@ const router = express.Router();
 const client = new Client({
     host: 'db',
     port: 5432,
+    database: 'user_test_table',
     user: 'postgres',
     password: '',
 });
@@ -11,7 +12,7 @@ const client = new Client({
 router.post('/add', async(req, res, next)=> {
     let body=req.body;
     await client.connect();
-    let dbResult=await client.query('INSERT INTO user_test_table(username, password) VALUES($1, $2)', [body.username, body.password]);
+    let dbResult=await client.query('INSERT INTO User(username, password) VALUES($1, $2)', [body.username, body.password]);
     client.end((err) => {
         console.log('client has disconnected');
         if (err) {
