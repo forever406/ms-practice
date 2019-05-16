@@ -7,7 +7,7 @@ const pool =new Pool({
     database: 'user_test_table',
     user: 'postgres',
     password: '',
-    max: 100,
+    max: 10000,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
   });
