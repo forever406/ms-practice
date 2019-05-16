@@ -12,10 +12,10 @@ const packageDefinition = protoLoader.loadSync(
         oneofs: true
     });
 const account_proto=grpc.loadPackageDefinition(packageDefinition).accountservice;
-const HOST='';
+const HOST='account:50051';
 let client=new account_proto.AccountService(HOST,
     grpc.credentials.createInsecure());
-router.post('/login', (req, res, next)=> {
+router.post('/add', (req, res, next)=> {
     const body=req.body;
     client.SignupNewUser({username:body.username,
         password:body.password},(err,response)=>{
@@ -25,7 +25,7 @@ router.post('/login', (req, res, next)=> {
 
 router.post('/login',(req, res, next)=> {
     const body=req.body;
-    client.SignupNewUser({username:body.username,
+    client.LoginUser({username:body.username,
         password:body.password},(err, response)=>{
         res.json({msg:response.message})
     });

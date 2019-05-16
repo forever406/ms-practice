@@ -3,8 +3,8 @@ const {Client}=require('pg');
 const router = express.Router();
 const client = new Client({
     host: 'db',
-    port: 5334,
-    user: '',
+    port: 5432,
+    user: 'postgres',
     password: '',
 });
 
