@@ -42,8 +42,6 @@ router.post('/add', async(req, res, next)=> {
            client.release(true)
 
        })
-
-    }
 });
 router.post('/login', async(req, res, next)=> {
     let body=req.body;
