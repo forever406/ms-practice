@@ -11,7 +11,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/native',require('./router/native'));
 app.use('/grpc',require('./router/grpc'));
-
+app.get('/test',(req,res,next)=>{
+    res.json({msg:0})
+});
 
 const server=http.createServer(app);
 server.listen(3000,()=>{
