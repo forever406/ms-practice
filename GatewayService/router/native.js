@@ -40,7 +40,7 @@ router.post('/add', async(req, res, next)=> {
 router.post('/login', async(req, res, next)=> {
     let body=req.body;
     let dbResult= await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
-    (body.password===dbResult.rows[0].password)? res.json({
+    dbResult.rows[0].password&&(body.password===dbResult.rows[0].password)? res.json({
         msg:'log in succeed',
         userid: dbResult.rows[0].userid,
         status:0
