@@ -17,6 +17,7 @@ let client=new account_proto.AccountService(HOST,
     grpc.credentials.createInsecure());
 router.post('/add', (req, res, next)=> {
     const body=req.body;
+    console.log(body);
     client.SignupNewUser({username:body.username,
         password:body.password},(err,response)=>{
         res.json({msg:response.message})
