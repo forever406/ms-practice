@@ -28,7 +28,7 @@ router.post('/login',(req, res, next)=> {
     client.SignupNewUser({username:body.username,
         password:body.password},(err, response)=>{
         res.json({msg:response.message})
-    };
+    });
 });
 
 module.exports=router;
