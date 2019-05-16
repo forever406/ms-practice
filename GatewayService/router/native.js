@@ -8,11 +8,12 @@ const client =new Client({
       user: 'postgres',
       password: '',
   });
+client.connect();
+
 
 router.post('/add', async(req, res, next)=> {
     let body=req.body;
     console.log(body);
-    await client.connect();
     await client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
     let dbResult=await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
     if (dbResult.rows[0]){
@@ -51,7 +52,6 @@ router.post('/add', async(req, res, next)=> {
 });
 router.post('/login', async(req, res, next)=> {
     let body=req.body;
-    await client.connect();
     let dbResult=await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
     (body.password===dbResult.rows[0].password)? res.json({
         msg:'log in succeed',
