@@ -11,13 +11,13 @@ const pool =new Pool({
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
   });
-client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
 
 
 router.post('/add', async(req, res, next)=> {
     let body=req.body;
     console.log(body);
     const client = await pool.connect();
+    client.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
     let dbResult=await client.query('SELECT * FROM account WHERE username = ($1);',[body.username]);
     if (dbResult.rows[0]){
         res.json({
