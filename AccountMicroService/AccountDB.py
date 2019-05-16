@@ -10,14 +10,14 @@ class BaseModel(Model):
         database = db
 
 
-class User(BaseModel):
+class Account(BaseModel):
     username = CharField()
     password = CharField()
     userid = UUIDField()
 
 
 def get_user(username):
-    users = User.select().where(User.username == username)
+    users = Account.select().where(Account.username == username)
     if len(users) > 0:
         return users[0]
     else:
@@ -28,14 +28,14 @@ def signup_user(username, password):
     user = get_user(username)
     if user is None:
         userid = uuid.uuid4()
-        user = User.create(username=username, password=password, userid=userid)
+        user = Account.create(username=username, password=password, userid=userid)
         return user
     else:
         return None
 
 
 def login_user(username, password):
-    users = User.select().where((User.username == username) & (User.password == password))
+    users = Account.select().where((Account.username == username) & (Account.password == password))
     if len(users) > 0:
         return users[0].userid
     else:
@@ -43,4 +43,4 @@ def login_user(username, password):
 
 
 db.connect()
-db.create_tables([User])
+db.create_tables([Account])
